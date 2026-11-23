@@ -65,6 +65,12 @@
       "keys": "禁漫天堂"
     },
     {
+      "title": "哔咔漫画",
+      "sub": "每日新番，污漫来袭",
+      "url": "https://d1z6fuks181zbg.cloudfront.net/?appId=30&dc=ovsa1bk",
+      "keys": "哔咔漫画"
+    },
+    {
       "title": "Pornhub",
       "sub": "（成人P站）",
       "iconUrl": "media/2024053111452296833.jpg",
@@ -99,12 +105,6 @@
       "brand": "#34D399",
       "ink": "#6EE7B7",
       "keys": "国产热推"
-    },
-    {
-      "title": "哔咔漫画",
-      "sub": "每日新番，污漫来袭",
-      "url": "https://d1z6fuks181zbg.cloudfront.net/?appId=30&dc=ovsa1bk",
-      "keys": "哔咔漫画"
     }
   ]
 }
