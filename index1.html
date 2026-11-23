@@ -515,148 +515,16 @@
   <!-- [/SS:DATA] -->
 
   <!-- ============================================================= -->
-  <!-- [PAGE:SCRIPT] 业务区 · AI 生成 UI 渲染 + 事件绑定              -->
-  <!-- ⛔ 数据读写只调 tableData.*（来自 ss-data-layer），禁止直接碰   -->
-  <!--    SmartsheetRuntime；字段名必须逐字命中 [SS:DATA] 的 FIELDS。 -->
+  <!-- [PAGE:SCRIPT] 页面逻辑与内容渲染 -->
   <!-- ============================================================= -->
   <script>
   (function () {
     'use strict';
-    // ⛔ 分支 D（无数据基座）：html-scaffold 预置的 PAGE_DATA / TABLES / T0 / tableData /
-    //    FIELDS / INITIAL_FORM 已整段删除 —— 本页不接任何数据源，也没有 createTableStore('') 死代码。
-    //    卡片内容就是下面这份字面量，纯前端渲染，无 fetch / 无本地存储。
+    // 页面数据从 JSON 文件加载，可通过 Pages CMS 管理。
 
-    /* ============================================================
-       站点信息：换名字、简介、统计、头像，只改这里
-       ============================================================ */
-    const SITE = {
-      name: 'Luna Chen',
-      handle: '永久网址：9 1 . L c',
-      bio: '牢记收藏，每日更新',
-      stats: [
-        { num: '12.8K', label: '关注' },
-        { num: '12', label: '链接' },
-        { num: '886K', label: '浏览' }
-      ],
-      avatarUrl: ''   // 头像图片直链（留空则用内置几何头像；加载失败自动回退）
-    };
-
-    // 想换成自己的内容，只改这里：
-    //   title  卡片标题      sub  卡片副标题
-    //   brand  主题色(#RRGGBB)  ink 图标颜色
-    //   iconUrl 自定义图标图片链接（留空则用内置图标）—— 支持 png/svg/webp 直链
-    //   url    点击跳转的链接（留空则点击只弹提示）
-    //   keys   搜索关键词（空格分隔）
-    const CARDS = [
-      {
-        title:   '91Pron',
-        sub:     '亚洲最火成人站',
-        brand:   '#15171C',
-        ink:     '#F2F5FA',
-        iconUrl: 'https://esaimg.cdn1.vip/i/68c3cd0624591_1757662470.webp',
-        url:     'https://d1azdslg2cwxi7.cloudfront.net?dc=nOi3Fh1K',
-        keys:    '91Pron'
-      },
-      {
-        title:   '好色短剧',
-        sub:     '全网最全短剧漫剧',
-        brand:   '#2AABEE',
-        ink:     '#4FC3F7',
-        iconUrl: 'https://esaimg.cdn1.vip/i/6aecd0f531a2c_1793904885.png',
-        url:     'https://d36666t8nyafzl.cloudfront.net?dc=UGIDQHLG',
-        keys:    '好色短剧'
-      },
-      {
-        title:   '海角社区',
-        sub:     '海角分享社区，随时开看',
-        brand:   '#5865F2',
-        ink:     '#8B93F8',
-        iconUrl: 'https://esaimg.cdn1.vip/i/68c3ce4853834_1757662792.webp',
-        url:     'https://d2cqa1qinfjq6i.cloudfront.net?dc=50iVUoy7',
-        keys:    '海角社区'
-      },
-      {
-        title:   '91视频',
-        sub:     '全网最全真实原创',
-        brand:   '#8B949E',
-        ink:     '#C9D1D9',
-        iconUrl: 'https://esaimg.cdn1.vip/i/68c3cd0622b79_1757662470.webp',
-        url:     'https://fk6qk.fzppdjwzwxroarvexcfkfhfkk.com/chan-6278/aff-njeeA',
-        keys:    '91视频'
-      },
-      {
-        title:   '洛丽塔',
-        sub:     '嫩妹资源应有尽有',
-        brand:   '#FF3D3D',
-        ink:     '#FF6B6B',
-        iconUrl: 'https://esaimg.cdn1.vip/i/6adcefedeb468_1792864237.webp',
-        url:     'https://i90a.kwjgssuuddsqamlxjlwllohzi.com/chan/lldapp2170/RrqN',
-        keys:    '洛丽塔'
-      },
-      {
-        title:   'TikTok成人版',
-        sub:     '让您性福每一天！！',
-        brand:   '#FF8A3D',
-        ink:     '#FFA76A',
-        iconUrl: 'https://esaimg.cdn1.vip/i/68c3cd785a5a1_1757662584.webp',
-        url:     'https://dnk.cylwidjukcocuewipklvdbqqu.com/chan/GS7050/nb5Ww',
-        keys:    'TikTok成人版'
-      },
-      {
-        title:   '黄果短剧',
-        sub:     'AI短剧·AI漫剧·AI换脸·AI魔改',
-        brand:   '#22B8CF',
-        ink:     '#4DD4E8',
-        iconUrl: 'https://esaimg.cdn1.vip/i/6adbb5344c2de_1792783668.webp',
-        url:     'https://emgy9.sxvawdwtedcnylpriyhdvpqdw.com/chan/ak0087/acYnf',
-        keys:    '黄果短剧'
-      },
-      {
-        title:   '禁漫天堂',
-        sub:     '最新最全污漫来袭',
-        brand:   '#8B5CF6',
-        ink:     '#B39BFF',
-        iconUrl: 'https://esaimg.cdn1.vip/i/68c3cbe8a6bf7_1757662184.webp',
-        url:     'https://vfm.ztqvzahwrbqpmcdsnkwwngqyq.com/chan/jm0116/aaBm7',
-        keys:    '禁漫天堂'
-      },
-      {
-        title:   '糖心Vlog',
-        sub:     '每一阵身体的抽搐都是来自糖心的回味',
-        brand:   '#F472B6',
-        ink:     '#F9A8D4',
-        iconUrl: 'https://esaimg.cdn1.vip/i/6adbb7ca9b197_1792784330.webp',
-        url:     'https://tangvv.cc',
-        keys:    '糖心Vlog'
-      },
-      {
-        title:   '国产热推',
-        sub:     '每次打开都有新看点',
-        brand:   '#34D399',
-        ink:     '#6EE7B7',
-        iconUrl: 'https://esaimg.cdn1.vip/i/6adbbdc573136_1792785861.webp',
-        url:     'https://g1h3.alfoptlepmcwcxyxfzohgrduc.com/chan/GS4349/amVRA',
-        keys:    '国产热推'
-      },
-      {
-        title:   'PornHub中文',
-        sub:     'PornHub，最火成人P站',
-        brand:   '#2DD4BF',
-        ink:     '#5EEAD4',
-        iconUrl: 'https://esaimg.cdn1.vip/i/68c3cd7859504_1757662584.webp',
-        url:     'https://lwio.kvmawxprapcvefybbtsncgdeg.com/chan/GS4919/aWVem',
-        keys:    'PornHub'
-      },
-      {
-        title:   '海角论坛',
-        sub:     '突破你的心理防线',
-        brand:   '#FBBF24',
-        ink:     '#FCD34D',
-        iconUrl: 'https://esaimg.cdn1.vip/i/6adbbd7770108_1792785783.webp',
-        url:     'https://i80.eyamxsjideaxwgxfnihbabuus.com/aff-jReZR',
-        keys:    '海角论坛'
-      }
-    ];
+    let SITE = {};
+    let CARDS = [];
+    const CONTENT_URL = 'data/alternate.json';
 
     /* 内置图标（按 title 对应；改了 title 找不到就回退到通用链接图标，不会报错） */
     const ICON_SET = {
@@ -727,6 +595,37 @@
       return ICON_SET[card.title] || ICON_SET.__fallback;
     }
 
+    function isWebUrl(value) {
+      return typeof value === 'string' && /^https?:\/\/\S+$/i.test(value);
+    }
+
+    function isImageUrl(value) {
+      var url = String(value || '').trim();
+      return !url || isWebUrl(url) || /^(?:\.\/)?media\/[^\s]+$/i.test(url);
+    }
+
+    function loadContent() {
+      return fetch(CONTENT_URL).then(function (response) {
+        if (!response.ok) throw new Error('Content request failed: ' + response.status);
+        return response.json();
+      }).then(function (data) {
+        var site = data && data.site;
+        var validSite = site && typeof site.name === 'string' &&
+          typeof site.handle === 'string' && typeof site.bio === 'string' &&
+          Array.isArray(site.stats) && site.stats.every(function (item) {
+            return item && typeof item.num === 'string' && typeof item.label === 'string';
+          }) && isImageUrl(site.avatarUrl);
+        var validCards = data && Array.isArray(data.cards) && data.cards.every(function (card) {
+          return card && typeof card.title === 'string' && typeof card.sub === 'string' &&
+            typeof card.keys === 'string' && isWebUrl(card.url) && isImageUrl(card.iconUrl) &&
+            /^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/i.test(card.brand) &&
+            /^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/i.test(card.ink);
+        });
+        if (!validSite || !validCards) throw new Error('Invalid editable content format');
+        SITE = site;
+        CARDS = data.cards;
+      });
+    }
     /* ---------------- DOM 引用 ---------------- */
     var listEl = document.getElementById('list');
     var emptyEl = document.getElementById('empty');
@@ -948,11 +847,16 @@
     }
 
     /* ---------------- 启动 ---------------- */
-    setTheme('dark');       // 默认深色（不写本地存储，刷新回默认）
-    renderHero();
-    renderList();
+    setTheme('dark');
     setSearchOpen(false);
-    applyFilter();
+    loadContent().then(function () {
+      renderHero();
+      renderList();
+      applyFilter();
+    }).catch(function (error) {
+      console.error('Unable to load page content.', error);
+      listEl.textContent = '页面内容加载失败，请稍后刷新。';
+    });
   })();
   </script>
   <!-- [/PAGE:SCRIPT] -->

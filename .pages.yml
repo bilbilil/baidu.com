@@ -1,0 +1,167 @@
+media:
+  input: media
+  output: media
+  rename: safe
+  categories:
+    - image
+
+content:
+  - name: home
+    label: 主站内容
+    type: file
+    path: data/home.json
+    format: json
+    fields:
+      - name: site
+        label: 页面信息
+        type: object
+        fields:
+          - name: name
+            label: 名称
+            type: string
+            required: true
+          - name: handle
+            label: 主页说明
+            type: string
+          - name: bio
+            label: 简介
+            type: string
+          - name: avatarUrl
+            label: 头像
+            type: image
+            options:
+              extensions:
+                - png
+                - jpg
+                - jpeg
+                - webp
+          - name: stats
+            label: 统计信息
+            type: object
+            list: true
+            fields:
+              - name: num
+                label: 数值
+                type: string
+              - name: label
+                label: 说明
+                type: string
+      - name: cards
+        label: 链接卡片
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - name: title
+            label: 标题
+            type: string
+            required: true
+          - name: sub
+            label: 描述
+            type: text
+          - name: iconUrl
+            label: 图片
+            type: image
+            options:
+              extensions:
+                - png
+                - jpg
+                - jpeg
+                - webp
+                - svg
+          - name: url
+            label: 跳转链接
+            type: string
+            required: true
+            pattern: '^https?://\S+$'
+          - name: brand
+            label: 品牌颜色
+            type: string
+          - name: ink
+            label: 图标颜色
+            type: string
+          - name: keys
+            label: 搜索关键词
+            type: string
+
+  - name: alternate
+    label: 备用页内容
+    type: file
+    path: data/alternate.json
+    format: json
+    fields:
+      - name: site
+        label: 页面信息
+        type: object
+        fields:
+          - name: name
+            label: 名称
+            type: string
+            required: true
+          - name: handle
+            label: 主页说明
+            type: string
+          - name: bio
+            label: 简介
+            type: string
+          - name: avatarUrl
+            label: 头像
+            type: image
+            options:
+              extensions:
+                - png
+                - jpg
+                - jpeg
+                - webp
+          - name: stats
+            label: 统计信息
+            type: object
+            list: true
+            fields:
+              - name: num
+                label: 数值
+                type: string
+              - name: label
+                label: 说明
+                type: string
+      - name: cards
+        label: 链接卡片
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - name: title
+            label: 标题
+            type: string
+            required: true
+          - name: sub
+            label: 描述
+            type: text
+          - name: iconUrl
+            label: 图片
+            type: image
+            options:
+              extensions:
+                - png
+                - jpg
+                - jpeg
+                - webp
+                - svg
+          - name: url
+            label: 跳转链接
+            type: string
+            required: true
+            pattern: '^https?://\S+$'
+          - name: brand
+            label: 品牌颜色
+            type: string
+          - name: ink
+            label: 图标颜色
+            type: string
+          - name: keys
+            label: 搜索关键词
+            type: string
